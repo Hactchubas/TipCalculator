@@ -10,10 +10,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.snackbar.Snackbar
 import java.text.DecimalFormat
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var tipPercentage : TextView
+    lateinit var seekBar: SeekBar
+    lateinit var billValueInput: String
+    lateinit var tipValue : TextView
+    lateinit var billValue : TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -33,25 +39,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun seekBarSetup(){
-        val seekBar : SeekBar = findViewById(R.id.seekBar)
-        val tipPercentage : TextView = findViewById(R.id.tipPercentageValue)
+        seekBar = findViewById(R.id.seekBar)
+        tipPercentage = findViewById(R.id.tipPercentageValue)
         tipPercentage.text = "${seekBar.progress}%"
 
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 // here, you react to the value being set in seekBar
-                val billValueInput : String = findViewById<TextView?>(R.id.billValueInput).text.toString()
-                val tipValue : TextView = findViewById(R.id.tipValue)
-                val billValue : TextView = findViewById(R.id.billValue)
+                billValueInput = findViewById<TextView?>(R.id.billValueInput).text.toString()
+                tipValue = findViewById(R.id.tipValue)
+                billValue = findViewById(R.id.billValue)
 
                 val decimalFormat = DecimalFormat("##.##")
 
                 if(billValueInput.isNotEmpty() && billValueInput != "") {
-                    val calcTip = seekBar.progress.toDouble() * 0.01 * billValueInput.toDouble()
+                    val calcTip = (seekBar.progress.toDouble()/100) * billValueInput.toDouble()
                     tipValue.text = decimalFormat.format(calcTip)
 
                     val billCalc = calcTip + billValueInput.toDouble()
                     billValue.text = decimalFormat.format(billCalc)
+                }else{
+                    Snackbar.make(
+                        findViewById(R.id.main),
+                        "Inform the bill value",
+                        Snackbar.ANIMATION_MODE_SLIDE
+                    ).show()
                 }
                 tipPercentage.text = "${seekBar.progress}%"
             }
@@ -62,16 +74,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun textWatcherSetup(){
-        val billValueInput : TextView = findViewById(R.id.billValueInput)
-
-        billValueInput.addTextChangedListener(object : TextWatcher{
+        val textField : TextView = findViewById(R.id.billValueInput)
+        textField.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val seekBar : SeekBar = findViewById(R.id.seekBar)
-                val billValueInput : String = findViewById<TextView?>(R.id.billValueInput).text.toString()
-                val tipValue : TextView = findViewById(R.id.tipValue)
-                val billValue : TextView = findViewById(R.id.billValue)
+                seekBar = findViewById(R.id.seekBar)
+                billValueInput = findViewById<TextView?>(R.id.billValueInput).text.toString()
+                tipValue = findViewById(R.id.tipValue)
+                billValue = findViewById(R.id.billValue)
 
                 val decimalFormat = DecimalFormat("##.##")
 

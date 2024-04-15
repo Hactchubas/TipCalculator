@@ -24,11 +24,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed-medium"
-            android:hint="Type the bill value"
+            android:hint="Type the bill value. ex: 36.50"
             android:inputType="number|numberDecimal"
             android:textColor="@color/secondary_color"
             android:textColorHint="#FAE06D"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -50,6 +50,8 @@
         android:layout_height="18dp"
         android:max="100"
         android:progress="10"
+        android:thumbTint="@color/secondary_color"
+        android:progressTint="@color/secondary_color"
         app:layout_constraintBottom_toBottomOf="@+id/tipPercentageValue"
         app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
         app:layout_constraintHorizontal_bias="0.5"
